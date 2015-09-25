@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  background-color: #9fa8a3; }
+
+.hidden {
+  display: none; }
+
+.error {
+  color: #ff0033;
+  font-weight: bold; }
+
+#signup-form {
+  background-color: #e3e0cf;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
+  box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
+  padding: 20px; }
+  #signup-form label {
+    xwidth: 40%;
+    margin: 16px 15px 10px 0; }
+  #signup-form input {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+    padding: 12px 15px;
+    width: 100%; }
+  #signup-form input[type="submit"] {
+    width: auto;
+    background-color: #c5d5cb;
+    color: #fff; }
+  #signup-form label,
+  #signup-form input {
+    display: inline-block; }
+
+/*# sourceMappingURL=style.css.map */

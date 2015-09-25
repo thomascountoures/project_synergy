@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="synergyApp">
+<head>
+	<link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+</head>
+<body>
+
+	
+	<!-- main UI view -->	
+	<div ui-view></div>
+
+	
+
+	<!-- external libraries -->
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.3/angular-resource.min.js"></script>
+	<script src="/bower_components/underscore/underscore-min.js"></script>
+	
+
+	<!-- global app.js -->	
+	<script src="/app/app.js"></script>
+
+	<!-- services/factories -->
+	<script src="/factories/FormFactory.js"></script>
+	<script src="/factories/UserFactory.js"></script>
+	<script src="/factories/UnderscoreFactory.js"></script>
+	
+	<!-- controllers -->
+	<script src="/modules/home/home.js"></script>	
+	<script src="/modules/signup/signup.js"></script>	
+	<script src="/modules/login/login.js"></script>	
+
+
+	
+</body>
+
+</html>

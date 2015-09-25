@@ -1,0 +1,9 @@
+{
+  "name": "Project Synergy",
+  "version": "0.0.1",
+  "devDependencies": {
+    "angular": "~1.4.5",
+    "angular-ui-router": "~0.2.15",
+    "jquery": "~2.1.4"
+  }
+}

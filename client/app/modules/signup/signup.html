@@ -1,0 +1,146 @@
+<div class="container">
+	<div class="col-md-12">
+		<!-- Todo View -->
+		<header class="main-title">
+			<h1>Sign up</h1>
+		</header>
+
+		<form ng-submit="signup.submitRegistration()" id="signup-form" name="signup.signupForm" novalidate>
+			
+			<fieldset>
+				
+				<!-- first name -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="first-name">First Name</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" placeholder="First Name" name="first-name" ng-model="signup.firstName" required/>
+						</div>
+					</div>
+				</div>
+
+				<!-- first name errors -->
+				<div class="error-container" ng-show="signup.signupForm.firstName.$dirty && signup.signupForm.firstName.$invalid">
+					<span class="error" ng-show="signup.signupForm.firstName.$error.required">Oops! Your first name is required.</span>
+				</div>
+
+				
+				<!-- last name -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="last-name">Last Name</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" placeholder="Last Name" name="lastName" ng-model="signup.lastName" required/>
+						</div>
+					</div>
+				</div>
+
+				<!-- last name errors -->
+				<div class="error-container" ng-show="signup.signupForm.lastName.$dirty && signup.signupForm.lastName.$invalid">
+					<span class="error" ng-show="signup.signupForm.lastName.$error.required">Oops! Your last name is required.</span>
+				</div>
+
+
+
+				<!-- desired username -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="username">Username</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" placeholder="Desired Username" name="username" ng-model="signup.username" required/>
+						</div>
+					</div>
+				</div>
+
+				<!-- desired username errors -->
+				<div class="error-container" ng-show="signup.signupForm.username.$dirty && signup.signupForm.username.$invalid">
+					<span class="error" ng-show="signup.signupForm.username.$error.required">Oops! A username is required.</span>
+				</div>
+
+
+
+				<!-- email -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="last-name">Email</label>
+						</div>
+						<div class="col-md-8">
+							<input type="email" placeholder="Email (optional)" name="email" ng-model="signup.email" />
+						</div>
+					</div>
+				</div>
+
+				<!-- email errors -->
+				<div class="error-container" ng-show="signup.signupForm.username.$dirty && signup.signupForm.username.$invalid">
+					<span class="error" ng-show="signup.signupForm.username.$error.email">Oops! A valid email is required.</span>
+				</div>
+
+
+				
+				<!-- password -->
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="password">Password</label>
+						</div>
+						<div class="col-md-8">
+							<input type="password" placeholder="Password" name="password" class="password" ng-model="signup.password" ng-minlength="5"/>
+						</div>
+					</div>
+				</div>
+
+				<!-- password errors -->
+				<div class="error-container" ng-show="signup.signupForm.password.$dirty && signup.signupForm.password.$invalid">
+					<!-- form error cases -->
+					<span class="error" ng-show="signup.signupForm.password.$error.minlength"> Password must be at least 5 characters in length.</span>
+					<span class="error" ng-show="signup.signupForm.password.$error.required">Oops! Please enter a password.</span>
+				</div>
+				
+
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="password">Enter Password Again</label>
+						</div>
+						<div class="col-md-8">
+							<input type="password" placeholder="Enter Password Again" name="repeatPassword" class="password-again" ng-model="signup.repeatPassword"/>
+							<span class="error" ng-show="signup.passwordFail === true">Error: Passwords don't match.</span>
+						</div>
+					</div>
+				</div>
+
+			</fieldset>
+
+			<!--<button ng-click="signup.cool()">Say Hello</button>-->
+
+			<fieldset>
+				<input type="submit" value="Sign up" class="btn"/>
+			</fieldset>
+
+		</form>
+
+		<p ng-show="signup.signedUp == false">Already a user? <a ui-sref="home">Login here.</a></p>
+
+		<section class="success" ng-show="signup.signedUp == true">
+			<p>Success! You have signed up.</p>
+		</section>
+	</div>
+</div>
+
+
+
+
+	
+	
+
+		
+
+
