@@ -1,13 +1,17 @@
-* {
-	box-sizing:border-box;
-}
-
 //Color Scheme:
 
 $green: #c5d5cb;
 $grey: #9fa8a3; 
 $beige: #e3e0cf;
 $white: #fff;
+$light_grey: #ddd;
+
+* {
+	box-sizing:border-box;
+}
+body {
+  background-color:$grey; 
+}
 
 //mixins
 @mixin border-radius($radius) {
@@ -17,15 +21,50 @@ $white: #fff;
           border-radius: $radius;
 }
 @mixin box-shadow($x, $y, $blur, $spread, $color) {
-	-webkit-box-shadow: $x, $y, $blur, $spread, $color;
-		-moz-box-shadow:$x, $y, $blur, $spread, $color;
-		-ms-box-shadow: $x, $y, $blur, $spread, $color;
-			box-shadow: $x, $y, $blur, $spread, $color;
+	-webkit-box-shadow: $x $y $blur $spread $color;
+	   -moz-box-shadow: $x $y $blur $spread $color;
+		-ms-box-shadow: $x $y $blur $spread $color;
+			box-shadow: $x $y $blur $spread $color;
+}
+@mixin transition($prop, $time, $type) {
+	-webkit-transition: $prop $time $type;
+	   -moz-transition: $prop $time $type;
+	    -ms-transition: $prop $time $type;
+	        transition: $prop $time $type;
 }
 
+//Reusable styles:
 
-body {
-  background-color:$grey; }
+#main-title h1 {
+	color:$green;
+	text-transform: lowercase;
+	text-align: center;
+	margin-bottom:20px;
+}
+
+.link {
+	padding:4px 8px;
+	text-decoration: none;
+	@include border-radius(10px);
+	@include box-shadow(0, 1px, 2px, 0, $light_grey);
+	@include transition(all, 0.2s, ease-in);
+	&.beige {
+		background-color:$beige;
+		color:$grey;		
+	}
+	&.green {
+		background-color:$green;
+		color:$white;		
+	}
+	&.grey {
+		background-color:$grey;
+		color:$white;
+	}	
+	&:hover {
+		background-color:$light_grey;
+		color:$white;
+	}	
+}
 
 .hidden {
   display: none; 
@@ -36,12 +75,13 @@ body {
 	font-weight:bold;
 }
 
-// Signup Form
+// Signup Form, Registration Form
 
-#signup-form {
+#signup-form,
+#login-form {
 	background-color: $beige;
 	@include border-radius(5px);
-	@include box-shadow(0, 2px, 0, 0, rgba(0,0,0,0.1));
+	@include box-shadow(0, 2px, 2px, 0, $light_grey);	
 	padding:20px;	
 	label {
 		xwidth:40%;
@@ -62,4 +102,15 @@ body {
 	input {
 		display:inline-block;
 	}
+}
+
+#login-form {
+	margin-top:10%;
+}
+
+//Registration Page 
+
+.not-a-user {
+	margin-top:40px;	
+	color:$white;
 }

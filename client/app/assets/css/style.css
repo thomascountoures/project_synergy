@@ -4,6 +4,40 @@
 body {
   background-color: #9fa8a3; }
 
+#main-title h1 {
+  color: #c5d5cb;
+  text-transform: lowercase;
+  text-align: center;
+  margin-bottom: 20px; }
+
+.link {
+  padding: 4px 8px;
+  text-decoration: none;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 1px 2px 0 #ddd;
+  -moz-box-shadow: 0 1px 2px 0 #ddd;
+  -ms-box-shadow: 0 1px 2px 0 #ddd;
+  box-shadow: 0 1px 2px 0 #ddd;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -ms-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in; }
+  .link.beige {
+    background-color: #e3e0cf;
+    color: #9fa8a3; }
+  .link.green {
+    background-color: #c5d5cb;
+    color: #fff; }
+  .link.grey {
+    background-color: #9fa8a3;
+    color: #fff; }
+  .link:hover {
+    background-color: #ddd;
+    color: #fff; }
+
 .hidden {
   display: none; }
 
@@ -11,21 +45,24 @@ body {
   color: #ff0033;
   font-weight: bold; }
 
-#signup-form {
+#signup-form,
+#login-form {
   background-color: #e3e0cf;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
-  box-shadow: 0, 2px, 0, 0, rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 2px 2px 0 #ddd;
+  -moz-box-shadow: 0 2px 2px 0 #ddd;
+  -ms-box-shadow: 0 2px 2px 0 #ddd;
+  box-shadow: 0 2px 2px 0 #ddd;
   padding: 20px; }
-  #signup-form label {
+  #signup-form label,
+  #login-form label {
     xwidth: 40%;
     margin: 16px 15px 10px 0; }
-  #signup-form input {
+  #signup-form input,
+  #login-form input {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
@@ -33,12 +70,22 @@ body {
     border: none;
     padding: 12px 15px;
     width: 100%; }
-  #signup-form input[type="submit"] {
+  #signup-form input[type="submit"],
+  #login-form input[type="submit"] {
     width: auto;
     background-color: #c5d5cb;
     color: #fff; }
   #signup-form label,
-  #signup-form input {
+  #signup-form input,
+  #login-form label,
+  #login-form input {
     display: inline-block; }
+
+#login-form {
+  margin-top: 10%; }
+
+.not-a-user {
+  margin-top: 40px;
+  color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
