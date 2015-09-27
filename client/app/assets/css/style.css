@@ -1,14 +1,28 @@
+@font-face {
+  font-family: 'kelson-bold';
+  src: url("../fonts/kelson/kelson_sans_bold-webfont.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/kelson/kelson_sans_bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/kelson/kelson_sans_bold-webfont.woff2") format("woff2"), url("../fonts/kelson/kelson_sans_bold-webfont.woff") format("woff"), url("../fonts/kelson/kelson_sans_bold-webfont.ttf") format("truetype"), url("../fonts/kelson/kelson_sans_bold-webfont.svg#svgFontName") format("svg");
+  /* Legacy iOS */ }
+@font-face {
+  font-family: 'kelson-light';
+  src: url("../fonts/kelson/kelson_sans_regular-webfont.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/kelson/kelson_sans_regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/kelson/kelson_sans_regular-webfont.woff2") format("woff2"), url("../fonts/kelson/kelson_sans_regular-webfont.woff") format("woff"), url("../fonts/kelson/kelson_sans_regular-webfont.ttf") format("truetype"), url("../fonts/kelson/kelson_sans_regular-webfont.svg#svgFontName") format("svg");
+  /* Legacy iOS */ }
 * {
   box-sizing: border-box; }
 
 body {
-  background-color: #9fa8a3; }
+  background-color: #9fa8a3;
+  font-family: 'kelson-light', Arial, sans-serif; }
 
 #main-title h1 {
   color: #c5d5cb;
   text-transform: lowercase;
   text-align: center;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  font-family: 'kelson-bold'; }
 
 .link {
   padding: 4px 8px;
@@ -36,7 +50,8 @@ body {
     color: #fff; }
   .link:hover {
     background-color: #ddd;
-    color: #fff; }
+    color: #fff;
+    text-decoration: none; }
 
 .hidden {
   display: none; }

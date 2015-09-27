@@ -3,15 +3,16 @@
 	<div class="col-md-12">
 		<header id="main-title">
 			<h1>Project_Synergy</h1>
+			
 		</header>
-		<form ng-submit="login()" ng-controller="LoginCtrl" id="login-form">			
+		<form ng-submit="login.login()" ng-controller="LoginCtrl" id="login-form" name="login.loginForm">			
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-4">
 						<label for="username">Username</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" placeholder="Username" ng-model="username" name="username"/>
+						<input type="text" placeholder="Username" ng-model="login.username" name="username"/>
 					</div>
 				</div>
 			</div>
@@ -21,14 +22,20 @@
 						<label for="password">Password</label>
 					</div>
 					<div class="col-md-8">
-						<input type="password" placeholder="Password" ng-model="password" name="password"/>
+						<input type="password" placeholder="Password" ng-model="login.password" name="password"/>
 					</div>
 				</div>
-				</div>
-				
+			</div>
+
+			<!-- password errors -->
+			<div class="error-container" ng-show="login.loginForm.password.$dirty && signup.signupForm.password.$invalid">
+				<!-- form error cases -->
+				<span class="error" ng-show="login.loginForm.password.$error.minlength"> Password must be at least 5 characters in length.</span>
+				<span class="error" ng-show="login.loginForm.password.$error.required">Oops! Please enter a password.</span>
+			</div>
 			
 		</form>
-		
+
 		<div class="not-a-user">
 			<p>Not a user? <a ui-sref="signup" class="link beige">Sign up here.</a></p>
 		</div>

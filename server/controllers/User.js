@@ -8,5 +8,6 @@ module.exports.createUser = function (req, res) {
 	console.dir(db);
 	
 	db.insertValue('Users', req.body);
+	res.send(200);
 
 };
