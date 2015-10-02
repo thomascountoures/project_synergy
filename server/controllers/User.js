@@ -1,7 +1,6 @@
 var db = require('../helpers/db_module');
 
-//Create a new todo
-module.exports.createUser = function (req, res) {
+function createUser(req, res) {
 	console.dir(req.body);
 	console.log('inserting user...');	
 
@@ -11,3 +10,15 @@ module.exports.createUser = function (req, res) {
 	res.send(200);
 
 };
+
+function login(req, res) {
+	var username = req.body.username,
+		password = req.body.password;
+
+	//db.loginUser('users', username, password);
+}
+
+//Create a new todo
+module.exports.login = login;
+module.exports.createUser = createUser;
+

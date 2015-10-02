@@ -10,7 +10,8 @@ angular
 		'underscore',
 		'home',
 		'signup',
-		'login'
+		'login',
+		'dashboard'
 	])
 
 	.config([

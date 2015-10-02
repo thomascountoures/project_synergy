@@ -2,7 +2,7 @@
 'use strict';
 
 //named controller for more helpful debugging
-var LoginCtrl = function($resource, $q, User) {
+var LoginCtrl = function($http, $q, User) {
 
 	this.message = "hello world";
 	console.dir(this);
@@ -11,6 +11,9 @@ var LoginCtrl = function($resource, $q, User) {
 			password = this.password,
 			form	 = this.loginForm;
 
+		if(form.$valid) {
+			
+		}
 		
 	}
 
@@ -32,7 +35,7 @@ angular
 			});
 	}])
 
-	.controller('LoginCtrl', ['$resource','$q', 'User', LoginCtrl]);
+	.controller('LoginCtrl', ['$http','$q', 'User', LoginCtrl]);
 
 
 })();
