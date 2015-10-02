@@ -31,7 +31,7 @@ var SignupCtrl = function($http, $q, User, FormTools) {
 			if(password === repeatPassword) {
 				this.passwordFail == false;
 				console.log("creating user");
-				User.createUser(user)
+				User.create(user)
 				.then(function(response) {				
 					console.log('user saved!');
 				}, function(err) {				

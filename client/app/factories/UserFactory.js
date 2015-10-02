@@ -5,7 +5,7 @@ var UserHelpers = function($http, $q) {
 
 	var User = {};
 
-	User.createUser = function(user) {
+	User.create = function(user) {
 		//get user information, save that user to the REST api (/api/users)		
 		
 		var defer = $q.defer();
@@ -21,6 +21,16 @@ var UserHelpers = function($http, $q) {
 		console.dir(User);
 		return defer.promise;		
 	};
+
+	User.login = function(user) {
+		var defer = $q.defer();
+
+		
+
+
+		return defer.promise;
+
+	}
 
 	User.getUsers = function() {
 		var defer = $q.defer();
@@ -38,10 +48,7 @@ var UserHelpers = function($http, $q) {
 		return defer.promise;
 	};
 
-	User.sayHello = function() {
-		alert("Hello!");
-	};
-
+	
 
 	return User;
 
