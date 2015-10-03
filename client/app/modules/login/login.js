@@ -7,12 +7,22 @@ var LoginCtrl = function($http, $q, User) {
 	this.message = "hello world";
 	console.dir(this);
 	function login() {
-		var username = this.username,
-			password = this.password,
-			form	 = this.loginForm;
+
+		var form = this.loginForm;
+
+		var user = {
+			username: this.username,
+			password: this.password
+		}		
+		
 
 		if(form.$valid) {
-			
+			User.login(user)
+			.then(function(response) {
+				console.log("user logged in");
+			}, function(err, status) {
+				console.error("error, user couldn't login: " + err);
+			});
 		}
 		
 	}

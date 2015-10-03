@@ -91,37 +91,48 @@ var QUERY_UTILS = {
 					//query() parameters, just omit the '?'
 					if(!columns) {						
 						sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
+
+						var defer = Q.defer();
+
 						var results = queryCallback = function(err, results, fields) {
 							//no error
 							if(!err) {
 						 		console.log('success, this is what happened: '+ query.sql);
 						 		connection.end();
+						 		defer.resolve(results);
 						 		return results;
 						 	} else {
 						 		console.error('error, could not insert: ' + err);
 						 		connection.end();
+						 		defer.reject(err);
 						 		return false;		 		
 						 	}
 				 		}
 
 						query = connection.query(sql, values, queryCallback);
 
-						return results;
+						return defer.promise;
 						
 					//there are specific columns
 					} else {
 						if(columns instanceof Array) {
+
 							columns = columns.join(", ");
 							sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
-							var final_result = queryCallback = function(err, results) {
+
+							var defer = Q.defer();
+
+							queryCallback = function(err, results) {
 								//no error
 								if(!err) {
 							 		console.log('success, this is what happened: '+ query.sql);
 							 		connection.end();
+							 		defer.resolve(results);
 							 		return;
 							 	} else {
 							 		console.error('error, could not insert: ' + err);
 							 		connection.end();
+							 		defer.reject(err);
 							 		return;			 		
 							 	}
 					 		}

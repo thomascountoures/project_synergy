@@ -6,8 +6,12 @@ function createUser(req, res) {
 
 	console.dir(db);
 	
-	db.insertValue('Users', req.body);
-	res.send(200);
+	db.insertValues('Users', req.body)
+	.then(function(response) {
+		res.send(200);
+	}, function(err, status) {
+		res.send(401);
+	});
 
 };
 
