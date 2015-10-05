@@ -24,13 +24,28 @@ var UserHelpers = function($http, $q) {
 
 	User.login = function(user) {
 		var defer = $q.defer();
+		console.log("user before stringify");
+		console.dir(user);
+
+		// console.log("user after stringify");
+		// user = JSON.stringify(user);
+		// console.log(user);
+
+		// console.log("user after url encode");
+		// user = encodeURIComponent(user);
+		// console.log(user);
 
 		
-
+		$http.post('/login', user)
+		.success(function(response) {
+			defer.resolve(response);
+		}, function(err, status) {
+			defer.reject(response);
+		});
 
 		return defer.promise;
 
-	}
+	};
 
 	User.getUsers = function() {
 		var defer = $q.defer();

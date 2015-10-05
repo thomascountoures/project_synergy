@@ -82,14 +82,15 @@ function localStrategyConfig() {
 	var username = username,
 		password = password;
 	console.log("local strategy running");
-	db.loginUser('users', username, password)
-	  .then(function(res) {
-	  	//success
-	  	return done(null, {username: username});
-	  }, function(err) {
-	  	//error
-	  	return done(null, null);
-	  });
+	console.dir(db);
+	// db.loginUser('users', username, password)
+	//   .then(function(res) {
+	//   	//success
+	//   	return done(null, {username: username});
+	//   }, function(err) {
+	//   	//error
+	//   	return done(null, null);
+	//   });
 }
 
 var localStrategy = new passportLocal.Strategy(localStrategyConfig);
@@ -103,7 +104,7 @@ passport.use(localStrategy);
  * * * * * * * * * * * * * *  */
 
 app.post('/api/users', User.createUser);
-app.post('/login', passport.autheticate('local'), function(req, res) {
+app.post('/login', passport.authenticate('local'), function(req, res) {
 
 });
 

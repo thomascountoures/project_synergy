@@ -2,12 +2,10 @@
 'use strict';
 
 //named controller for more helpful debugging
-var LoginCtrl = function($http, $q, User) {
+var LoginCtrl = function($http, $q, User) {		
 
-	this.message = "hello world";
-	console.dir(this);
 	function login() {
-
+		console.log("login");
 		var form = this.loginForm;
 
 		var user = {
@@ -15,8 +13,9 @@ var LoginCtrl = function($http, $q, User) {
 			password: this.password
 		}		
 		
-
 		if(form.$valid) {
+			console.log("valid form");
+			console.dir(user);
 			User.login(user)
 			.then(function(response) {
 				console.log("user logged in");
@@ -27,8 +26,7 @@ var LoginCtrl = function($http, $q, User) {
 		
 	}
 
-	this.login = login.toString();
-	
+	this.login = login;
 };
 
 angular

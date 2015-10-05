@@ -143,48 +143,5 @@ var QUERY_UTILS = {
 
 }
 
-//create a connection from node to the MySQL database
-function doDatabaseStuff(queryType, table, values, columns) {
-	var queryType  = queryType.toLowerCase(),
-		sql,
-		values,
-		query,
-		queryCallback;
-
-	//establish connection to mysql database
-	var mysql = require('mysql');
-	var connection = mysql.createConnection({
-			host: 'localhost',
-			user: '',
-			password: '',
-			database: ''
-		});
-
-	connection.connect(function(err) {
-		if(err) {
-			console.error('error connection: ' + err.stack);
-		} else {
- 			console.log('connected as id ' + connection.threadId);
- 		}
-	});
-	
-	switch(queryType) {
-
-		case 'login':
-			QUERY_UTILS.loginUser();
-			break;
-
-		case 'insert':
-			QUERY_UTILS.insertValues();
-			break;
-
-		case 'selectOne':
-			QUERY_UTILS.selectValue();
-			break;
-			
-
-	} //switch
-}
-
 //assign functions
 module.exports.loginUser = QUERY_UTILS.loginUser;
