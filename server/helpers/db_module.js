@@ -14,6 +14,7 @@ var QUERY_UTILS = {
 				database: ''
 			});
 
+		console.log("creating connection...");
 		connection.connect(function(err) {
 			if(err) {
 				console.error('error connection: ' + err.stack);
@@ -26,120 +27,128 @@ var QUERY_UTILS = {
 	},
 
 	loginUser: function(table, username, password) {
-				console.log("greetings from login user");
-				var connection = this.createConnection();
+		console.log("greetings from login user");
+		console.dir(this);
+		console.log("username: " + username);
+		console.log("password: " + password);
 
-				if(typeof username === 'string' && typeof password === 'string') {
-					sql = 'SELECT username, password from ' + table 
-						  + ' WHERE username= ' + connection.escape(username) + 
-						  ' and password= ' + connection.escape(password);
+		var connection = QUERY_UTILS.createConnection();
 
-				  	var defer = Q.defer();
+		if(typeof username === 'string' && typeof password === 'string') {
+			var sql = 'SELECT username, password from ' + table 
+				  + ' WHERE username= ' + connection.escape(username) + 
+				  ' and password= ' + connection.escape(password);
 
-				  	queryCallback = function(err, query_results, fields) {
-				  		// error will be an Error if one occurred during the query 
-			  			// results will contain the results of the query 
-			  			// fields will contain information about the returned results fields (if any) 
-			  			if(!err) {
-			  				console.log("success! user has good credentials");
-			  				console.log(query_results);
-			  				defer.resolve(query_results);			  				
-			  			} else {
-			  				console.error("error: " + err);
-			  				defer.reject(err);
-			  			}
+			//Set up promise
+		  	var defer = q.defer();
 
-			  			return defer.promise;
-				  	}
+		  	queryCallback = function(err, query_results, fields) {
+		  		// error will be an Error if one occurred during the query 
+	  			// results will contain the results of the query 
+	  			// fields will contain information about the returned results fields (if any) 
+	  			if(!err) {
+	  				console.log("success! user has good credentials");
+	  				console.log(query_results);
+	  				defer.resolve(query_results);
+	  			} else {
+	  				console.error("bad credentials: " + err);
+	  				defer.reject(err);
+	  			}
 
-					connection.query(sql, queryCallback);
-					connection.end();
+	  			
+		  	}
 
-					return final_result;
+		  	//Do the actual query
+			connection.query(sql, queryCallback);
 
-				} else {
-					console.error("Username or password parameter is not a string. Or both. Newbs. lol");
-				}
-			},
+			//End connection
+			connection.end();
+
+			return defer.promise;
+
+		} else {
+			console.error("Username or password parameter is not a string. Or both. Newbs. lol");
+		}
+	},
 
 	selectValue: function(table, columns, item, itemValue) {
 
-					var connection = this.createConnection();
+		var connection = this.createConnection();
 
-					if(typeof table == 'string' && typeof values == 'object') {
-						sql = 'SELECT ' + columns + ' FROM `' + table 
-							  + '` WHERE `' + item + '` = '  + itemValue;
+		if(typeof table == 'string' && typeof values == 'object') {
+			var sql = 'SELECT ' + columns + ' FROM `' + table 
+				  + '` WHERE `' + item + '` = '  + itemValue;
 
-					  	var defer = Q.defer();
-						queryCallback = function(err, query_results, fields) {
-							if(!err) {
-								defer.resolve(query_results);
-							} else {
-								console.error('error, could not select: ' + err);
-								defer.reject(err);
-							}
-						}
-					} else {
-						console.error('Table or Value parameter is not a valid type.');
-					}
-				},
+		  	var defer = Q.defer();
+			queryCallback = function(err, query_results, fields) {
+				if(!err) {
+					defer.resolve(query_results);
+				} else {
+					console.error('error, could not select: ' + err);
+					defer.reject(err);
+				}
+			}
+		} else {
+			console.error('Table or Value parameter is not a valid type.');
+		}
+	},
 
 	insertValues: function() {
-					//regular insert, no specific columns
-					//remember, the '?' is a placeholder for the values parameter. the values
-					//parameter is optional and you can just use the query and callback as the
-					//query() parameters, just omit the '?'
-					if(!columns) {						
-						sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
+		//regular insert, no specific columns
+		//remember, the '?' is a placeholder for the values parameter. the values
+		//parameter is optional and you can just use the query and callback as the
+		//query() parameters, just omit the '?'
+		if(!columns) {						
+			var sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
 
-						var defer = Q.defer();
+			var defer = Q.defer();
 
-						var results = queryCallback = function(err, results, fields) {
-							//no error
-							if(!err) {
-						 		console.log('success, this is what happened: '+ query.sql);
-						 		connection.end();
-						 		defer.resolve(results);
-						 		return results;
-						 	} else {
-						 		console.error('error, could not insert: ' + err);
-						 		connection.end();
-						 		defer.reject(err);
-						 		return false;		 		
-						 	}
-				 		}
+			var results = queryCallback = function(err, results, fields) {
+				//no error
+				if(!err) {
+			 		console.log('success, this is what happened: '+ query.sql);
+			 		connection.end();
+			 		defer.resolve(results);
+			 		return results;
+			 	} else {
+			 		console.error('error, could not insert: ' + err);
+			 		connection.end();
+			 		defer.reject(err);
+			 		return false;		 		
+			 	}
+	 		}
 
-						query = connection.query(sql, values, queryCallback);
+			query = connection.query(sql, values, queryCallback);
 
-						return defer.promise;
-						
-					//there are specific columns
-					} else {
-						if(columns instanceof Array) {
+			return defer.promise;
+			
+		//there are specific columns
+		} else {
+			if(columns instanceof Array) {
 
-							columns = columns.join(", ");
-							sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
+				columns = columns.join(", ");
+				var sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
 
-							var defer = Q.defer();
+				var defer = Q.defer();
 
-							queryCallback = function(err, results) {
-								//no error
-								if(!err) {
-							 		console.log('success, this is what happened: '+ query.sql);
-							 		connection.end();
-							 		defer.resolve(results);
-							 		return;
-							 	} else {
-							 		console.error('error, could not insert: ' + err);
-							 		connection.end();
-							 		defer.reject(err);
-							 		return;			 		
-							 	}
-					 		}
-							query = connection.query(sql, values, queryCallback);
-						}
-					}
-				}
+				queryCallback = function(err, results) {
+					//no error
+					if(!err) {
+				 		console.log('success, this is what happened: '+ query.sql);
+				 		connection.end();
+				 		defer.resolve(results);
+				 		return;
+				 	} else {
+				 		console.error('error, could not insert: ' + err);
+				 		connection.end();
+				 		defer.reject(err);
+				 		return;			 		
+				 	}
+		 		}
+				query = connection.query(sql, values, queryCallback);
+			}
+		}
+	}
 
 }
 
