@@ -21,8 +21,9 @@ var SignupCtrl = function($http, $q, User, FormTools) {
 			console.log("valid");
 			console.log("password: " + password + "\nrepeatPassword: " + repeatPassword);
 			var user = {
-				firstName: firstName,
-				lastName:  lastName,
+				//reminder: keys must match database column names
+				first_name: firstName,
+				last_name:  lastName,
 				username: username,
 				email: email,
 				password:  password

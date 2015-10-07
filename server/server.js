@@ -63,8 +63,6 @@ app.get("/", function (req, res) {
 });
 
 
-
-
 /* * * * * * * * * * * * * 
  * Passport Configuration *
  * * * * * * * * * * * * * */
@@ -85,7 +83,7 @@ function localStrategyConfig(username, password, done) {
 	console.log("local strategy running");
 	console.dir(db);
 
-	db.loginUser('users', username, password)
+	db.loginUser(username, password)
 	  .then(function(res) {
 	  	//login success
 	  	return done(null, {username: username});

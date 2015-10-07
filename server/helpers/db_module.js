@@ -26,40 +26,36 @@ var QUERY_UTILS = {
 		return connection;
 	},
 
-	loginUser: function(table, username, password) {
-		console.log("greetings from login user");
-		console.dir(this);
+	//note: assumes database table is called 'users'
+	loginUser: function(username, password) {
+		console.log("greetings from login user");		
 		console.log("username: " + username);
 		console.log("password: " + password);
 
 		var connection = QUERY_UTILS.createConnection();
 
 		if(typeof username === 'string' && typeof password === 'string') {
-			var sql = 'SELECT username, password from ' + table 
-				  + ' WHERE username= ' + connection.escape(username) + 
-				  ' and password= ' + connection.escape(password);
+			var sql = 'SELECT * FROM `users` WHERE `username`= ? and `password` = ?';
 
 			//Set up promise
 		  	var defer = q.defer();
 
-		  	queryCallback = function(err, query_results, fields) {
-		  		// error will be an Error if one occurred during the query 
-	  			// results will contain the results of the query 
-	  			// fields will contain information about the returned results fields (if any) 
-	  			if(!err) {
-	  				console.log("success! user has good credentials");
-	  				console.log(query_results);
-	  				defer.resolve(query_results);
-	  			} else {
-	  				console.error("bad credentials: " + err);
-	  				defer.reject(err);
-	  			}
-
-	  			
-		  	}
-
 		  	//Do the actual query
-			connection.query(sql, queryCallback);
+		  	connection.query({
+		  		sql: sql,
+		  		timeout: 40000,
+		  		values: [username, password]
+		  	}, function(error, results) {		  		
+	  			if(!error) {
+	  				console.log("success! user has good credentials");
+	  				console.log(results);
+	  				defer.resolve(results);
+	  			} else {
+	  				console.error("bad credentials: " + error);
+	  				console.log(results);
+	  				defer.reject(error);
+	  			}
+		  	});
 
 			//End connection
 			connection.end();
@@ -79,7 +75,9 @@ var QUERY_UTILS = {
 			var sql = 'SELECT ' + columns + ' FROM `' + table 
 				  + '` WHERE `' + item + '` = '  + itemValue;
 
-		  	var defer = Q.defer();
+		 	//Set up promise
+		  	var defer = q.defer();
+
 			queryCallback = function(err, query_results, fields) {
 				if(!err) {
 					defer.resolve(query_results);
@@ -93,17 +91,19 @@ var QUERY_UTILS = {
 		}
 	},
 
-	insertValues: function() {
+	insertValues: function(table, values, columns) {
+		var connection = QUERY_UTILS.createConnection();
+		console.log(values);
 		//regular insert, no specific columns
 		//remember, the '?' is a placeholder for the values parameter. the values
 		//parameter is optional and you can just use the query and callback as the
 		//query() parameters, just omit the '?'
 		if(!columns) {						
-			var sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
+			var sql = 'INSERT into ' + table + ' SET ?';
 
-			var defer = Q.defer();
+			var defer = q.defer();
 
-			var results = queryCallback = function(err, results, fields) {
+			queryCallback = function(err, results, fields) {
 				//no error
 				if(!err) {
 			 		console.log('success, this is what happened: '+ query.sql);
@@ -129,7 +129,7 @@ var QUERY_UTILS = {
 				columns = columns.join(", ");
 				var sql = 'INSERT into ' + table + '(' + columns + ') SET ?';
 
-				var defer = Q.defer();
+				var defer = q.defer();
 
 				queryCallback = function(err, results) {
 					//no error
@@ -154,3 +154,6 @@ var QUERY_UTILS = {
 
 //assign functions
 module.exports.loginUser = QUERY_UTILS.loginUser;
+module.exports.insertValues = QUERY_UTILS.insertValues;
+
+
