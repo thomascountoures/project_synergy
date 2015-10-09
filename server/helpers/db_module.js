@@ -47,11 +47,28 @@ var QUERY_UTILS = {
 		  		values: [username, password]
 		  	}, function(error, results) {		  		
 	  			if(!error) {
-	  				console.log("success! user has good credentials");
-	  				console.log(results);
-	  				defer.resolve(results);
+	  				//note: results will only be populated if there is a query match in the database
+	  				//there will 'be no error' when the the .query API makes a successful connection
+	  				//with the database. error is NOT checking for matching results!	  	
+	  				var results = results;
+
+	  				//should only return one match
+	  				if(results.length === 1) {
+	  					var result = results.pop();
+	  					if(username === result.username.toString() && result.password.toString() ) {
+	  						console.log("success! user has good credentials");
+	  						defer.resolve(result);
+	  					} else {
+	  						console.log("nope, user has bad credentials");
+	  						defer.reject(result);
+	  					}
+  					//no users found - bad credentials
+	  				} else {
+	  					console.error("bad credentials - no users found");
+	  					defer.reject(results);
+	  				}	  					  				
 	  			} else {
-	  				console.error("bad credentials: " + error);
+	  				console.error("error, could not connect to database: " + error);
 	  				console.log(results);
 	  				defer.reject(error);
 	  			}
@@ -64,30 +81,6 @@ var QUERY_UTILS = {
 
 		} else {
 			console.error("Username or password parameter is not a string. Or both. Newbs. lol");
-		}
-	},
-
-	selectValue: function(table, columns, item, itemValue) {
-
-		var connection = this.createConnection();
-
-		if(typeof table == 'string' && typeof values == 'object') {
-			var sql = 'SELECT ' + columns + ' FROM `' + table 
-				  + '` WHERE `' + item + '` = '  + itemValue;
-
-		 	//Set up promise
-		  	var defer = q.defer();
-
-			queryCallback = function(err, query_results, fields) {
-				if(!err) {
-					defer.resolve(query_results);
-				} else {
-					console.error('error, could not select: ' + err);
-					defer.reject(err);
-				}
-			}
-		} else {
-			console.error('Table or Value parameter is not a valid type.');
 		}
 	},
 
@@ -131,9 +124,22 @@ var QUERY_UTILS = {
 
 				var defer = q.defer();
 
+				connection.query({
+					sql: sql,
+					timeout: 40000,
+					values: [values],
+					function(error, results) {
+						if(!error) {
+
+						} else {
+							console.error("error, could not connect to database: " + error);
+						}
+					}
+				})
+
 				queryCallback = function(err, results) {
 					//no error
-					if(!err) {
+					if(!err) { 
 				 		console.log('success, this is what happened: '+ query.sql);
 				 		connection.end();
 				 		defer.resolve(results);
@@ -147,6 +153,30 @@ var QUERY_UTILS = {
 		 		}
 				query = connection.query(sql, values, queryCallback);
 			}
+		}
+	},
+
+	selectValue: function(table, columns, item, itemValue) {
+
+		var connection = this.createConnection();
+
+		if(typeof table == 'string' && typeof values == 'object') {
+			var sql = 'SELECT ' + columns + ' FROM `' + table 
+				  + '` WHERE `' + item + '` = '  + itemValue;
+
+		 	//Set up promise
+		  	var defer = q.defer();
+
+			queryCallback = function(err, query_results, fields) {
+				if(!err) {
+					defer.resolve(query_results);
+				} else {
+					console.error('error, could not select: ' + err);
+					defer.reject(err);
+				}
+			}
+		} else {
+			console.error('Table or Value parameter is not a valid type.');
 		}
 	}
 
