@@ -3,7 +3,7 @@
  * * * * * * * * * */
 
 var express    		 	   = require('express'),
-	mysql				   = require('mysql'),	
+	mysql				   = require('mysql'),
 	passport			   = require('passport'),
 	bcryptjs			   = require('bcryptjs'),
 	db 					   = require('./helpers/db_module'),
@@ -49,21 +49,6 @@ app.use("/app",routes.serveBaseFiles());
 
 
 /* * * * * * * * * * * * * 
- * Initialize/On Load * *
- * * * * * * * * * * * * */
-
-app.get("/", function (req, res) {	
-	res.sendFile(path.join(__dirname, '../client/app/', 'index.html'),
-		{
-			//passport adds .isAutheticated method to the request object
-			isAuthenticated: req.isAuthenticated(),
-			user: req.user
-		});
-	res.status(200);	
-});
-
-
-/* * * * * * * * * * * * * 
  * Passport Configuration *
  * * * * * * * * * * * * * */
 
@@ -76,27 +61,60 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-function localStrategyConfig(username, password, done) {
+//define passport local strategy
+var localStrategy = new passportLocal.Strategy(function(username, password, done) {
 	var username = username,
 		password = password;
 
 	console.log("local strategy running");
 	console.dir(db);
-
-	db.loginUser(username, password)
-	  .then(function(res) {
+	
+	db.login(username, password)
+	  .then(function(user) {
 	  	//login success
-	  	return done(null, {username: username});
-	  }, function(err) {
+	  	console.log("promise results: ");
+	  	console.log("user id: " + user.id);
+	  	console.log("user name: " + user.first_name);
+	  	console.log("username: " + user.username);
+	  	done(null, {id: user.id, username: user.username});
+	  }, function(error) {
 	  	//login error
-	  	return done(null, null);
+	  	console.log("login error");
+	  	console.dir(error);
+	  	done(null, {message: 'Incorrect username or password.'});
   	});
-}
+});
 
-var localStrategy = new passportLocal.Strategy(localStrategyConfig);
+//use local strategy
 passport.use(localStrategy);
 
+//serialize user into session
+passport.serializeUser(function(user, done) {
+	console.log("serialize user: " + user.id);
+	done(null, user.id);
+});
 
+passport.deserializeUser(function(id, done) {
+	console.log("deserializing");
+	db.logout(id)
+	.then(function(user) {
+		done(null, user);
+	}, function(error) {
+		done(null, {message: error});
+	});
+});
+
+
+
+
+/* * * * * * * * * * * * * 
+ * Initialize/On Load * *
+ * * * * * * * * * * * * */
+
+app.get("/", function(req, res) {	
+	res.sendFile(path.join(__dirname, '../client/app/', 'index.html'));
+	res.status(200);	
+});
 
 
 /* * * * * * * * * * * * * * * 
@@ -104,8 +122,22 @@ passport.use(localStrategy);
  * * * * * * * * * * * * * *  */
 
 app.post('/api/users', User.createUser);
+
 app.post('/login', passport.authenticate('local'), function(req, res) {
-	console.log(req.body);
+	console.log('authentication success');
+	console.dir(req.user);
+	res.redirect('/dashboard');
+});
+
+app.get("/dashboard", function(req, res) {
+	console.log("user!");	
+	res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'),
+	{
+		isAuthenticated: req.isAuthenticated(),
+		user:req.user
+	});
+	//console.dir(user.first_name);
+	res.status(200);
 });
 
 
