@@ -18,7 +18,10 @@ var LoginCtrl = function($http, $q, User) {
 			console.dir(user);
 			User.login(user)
 			.then(function(response) {
+				console.dir(response);
+				console.log(response.message);
 				console.log("user logged in");
+				return response;
 			}, function(err, status) {
 				console.error("error, user couldn't login: " + err);
 			});
@@ -27,6 +30,7 @@ var LoginCtrl = function($http, $q, User) {
 	}
 
 	this.login = login;
+
 };
 
 angular

@@ -1,7 +1,7 @@
 (function() {
 'use strict';
 
-var UserHelpers = function($http, $q) {
+var UserHelpers = function($http, $q, $location) {
 
 	var User = {};
 
@@ -23,23 +23,16 @@ var UserHelpers = function($http, $q) {
 	};
 
 	User.login = function(user) {
-		var defer = $q.defer();
-		console.log("user before stringify");
-		console.dir(user);
-
-		// console.log("user after stringify");
-		// user = JSON.stringify(user);
-		// console.log(user);
-
-		// console.log("user after url encode");
-		// user = encodeURIComponent(user);
-		// console.log(user);
-
+		var defer = $q.defer();			
 		
 		$http.post('/login', user)
 		.success(function(response) {
+			console.log("post success!");
+			console.dir(response);
 			defer.resolve(response);
+			$location.path('/dashboard');
 		}, function(err, status) {
+			console.log("no post for you");
 			defer.reject(response);
 		});
 
@@ -71,7 +64,7 @@ var UserHelpers = function($http, $q) {
 
 angular
 	.module('synergyApp')
-	.factory('User', ['$http', '$q', UserHelpers]);
+	.factory('User', ['$http', '$q', '$location', UserHelpers]);
 
 
 })();

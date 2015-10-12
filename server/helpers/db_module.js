@@ -70,7 +70,7 @@ var AUTH = {
 		}
 	},
 
-	logout: function(id) {		
+	deserialize: function(id) {		
 		var defer = q.defer();
 		console.log("logout id: " + id);
 		QUERY.select('*', 'users', '`id`', id)
@@ -207,7 +207,7 @@ var QUERY = {
 
 //assign functions
 module.exports.login = AUTH.login;
-module.exports.logout = AUTH.logout;
+module.exports.deserialize = AUTH.deserialize;
 module.exports.insert = QUERY.insert;
 
 

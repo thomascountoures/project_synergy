@@ -12,7 +12,8 @@ var express    		 	   = require('express'),
 	passportLocal		   = require('passport-local'),
 	expressSession		   = require('express-session'),
 	routes 	   		 	   = require('./routes'),
-	bodyParser 		 	   = require('body-parser'),		
+	bodyParser 		 	   = require('body-parser'),
+	flash				   = require('connect-flash'),
 	User 				   = require('./controllers/User');
 
 
@@ -35,6 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+app.use(flash());
 
 
 //mount paths
@@ -76,27 +78,28 @@ var localStrategy = new passportLocal.Strategy(function(username, password, done
 	  	console.log("user id: " + user.id);
 	  	console.log("user name: " + user.first_name);
 	  	console.log("username: " + user.username);
-	  	done(null, {id: user.id, username: user.username});
+	  	done(null, {id: user.id, username: user.username, first_name: user.first_name });
 	  }, function(error) {
 	  	//login error
 	  	console.log("login error");
 	  	console.dir(error);
-	  	done(null, {message: 'Incorrect username or password.'});
+	  	done(null, false, {message: 'Incorrect username or password.'});
   	});
 });
 
 //use local strategy
 passport.use(localStrategy);
 
-//serialize user into session
+//serialize user into session - user object passed from 'done' parameter inside local strategy function
 passport.serializeUser(function(user, done) {
 	console.log("serialize user: " + user.id);
+	console.log("serialized user first name: " + user.first_name);
 	done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
 	console.log("deserializing");
-	db.logout(id)
+	db.deserialize(id)
 	.then(function(user) {
 		done(null, user);
 	}, function(error) {
@@ -124,18 +127,21 @@ app.get("/", function(req, res) {
 app.post('/api/users', User.createUser);
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
+	//req.user holds the returned session object from the local strategy authentication
 	console.log('authentication success');
-	console.dir(req.user);
-	res.redirect('/dashboard');
+	console.log(req.user.first_name);
+	console.log(req.user.message);	
+	res.json({
+		redirect: true,
+		user: req.user
+	});
+	res.status(200);
 });
 
-app.get("/dashboard", function(req, res) {
-	console.log("user!");	
-	res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'),
-	{
-		isAuthenticated: req.isAuthenticated(),
-		user:req.user
-	});
+app.get('/dashboard', function(req, res) {
+	console.log("dashboard!");	
+	console.log(req.user.first_name);	
+	res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'));
 	//console.dir(user.first_name);
 	res.status(200);
 });
