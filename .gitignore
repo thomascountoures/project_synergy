@@ -1,8 +1,6 @@
-**/node_modules
-**/.sass-cache
-**/database
-**/bower_components
-**/.DS_Store
-**/._.DS_Store
-**/database
-notes.txt
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!screenshots/
