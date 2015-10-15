@@ -20,3 +20,4 @@ Here are some screenshots during development so far.
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen2.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen3.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen4.png)
+![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen5.png)
