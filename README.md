@@ -1,5 +1,5 @@
 # project_synergy by Thomas Countoures
-A web app I've been making from the ground up. Using AngularJS as my front end framework. On the server side I'm using Node.js, Express,MySQL. Cutting out some repetitive tasks with Grunt. Using this as a learning experience, and because it's fun. I'm quite literally developing this right now, so if you see a lot of random code comments and console logs, that's probably why.
+A web app I've been making from the ground up. Using AngularJS as my front end framework. On the server side I'm using Node.js, Express, MySQL. Cutting out some repetitive tasks with Grunt. Using this as a learning experience, and because it's fun. I'm quite literally developing this right now, so if you see a lot of random code comments and console logs, that's probably why.
 
 # important (I guess?) info
 You can clone this repo, but I've obviously left out the database information like login, password, tables information, etc. If for some reason you may be interested in this, you will need to set up the MySQL database and any other information on your localhost. At the current time, I am using the following bower components:
