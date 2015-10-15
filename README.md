@@ -9,10 +9,10 @@ You can clone this repo, but I've obviously left out the database information li
 * Bootstrap
 * Underscore.js
 
-# other cool stuff
+# screenshots
 Nothing else really. I'll keep this updated as I go along.
 
-* October 15, 2015
+October 15, 2015
 
 Here are some screenshots during development so far.
 
