@@ -71,19 +71,26 @@ var localStrategy = new passportLocal.Strategy(function(username, password, done
 	console.log("local strategy running");
 	console.dir(db);
 	
+	//call my db module API and perform login
 	db.login(username, password)
+	  //the user is sent back as a result of the SQL query from the login() function in the db_module helper
 	  .then(function(user) {
 	  	//login success
 	  	console.log("promise results: ");
 	  	console.log("user id: " + user.id);
 	  	console.log("user name: " + user.first_name);
 	  	console.log("username: " + user.username);
-	  	done(null, {id: user.id, username: user.username, first_name: user.first_name });
+	  	/* 
+		When Passport authenticates a request, it parses the credentials contained in the request. It then 
+		invokes the verify callback with those credentials as arguments, in this case username and password. 
+		If the credentials are valid, the verify callback invokes done to supply Passport with the user 
+		that authenticated. */		
+	  	return done(null, user);	  	
 	  }, function(error) {
 	  	//login error
 	  	console.log("login error");
 	  	console.dir(error);
-	  	done(null, false, {message: 'Incorrect username or password.'});
+	  	return done(null, false, {message: 'Incorrect username or password.'});
   	});
 });
 
@@ -141,10 +148,21 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 app.get('/dashboard', function(req, res) {
 	console.log("dashboard!");	
 	console.log(req.user.first_name);	
-	res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'));
+	//res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'));
+	if(!req.user.id) {
+		console.log("not authenticated");
+		res.redirect('/login');
+	} else {
+		res.json({
+			user: req.user
+		});
+	}
+	
 	//console.dir(user.first_name);
 	res.status(200);
 });
+
+
 
 
 

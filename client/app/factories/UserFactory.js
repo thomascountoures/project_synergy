@@ -1,7 +1,7 @@
 (function() {
 'use strict';
 
-var UserHelpers = function($http, $q, $location) {
+var UserHelpers = function($http, $q, $state, $rootScope) {
 
 	var User = {};
 
@@ -29,8 +29,15 @@ var UserHelpers = function($http, $q, $location) {
 		.success(function(response) {
 			console.log("post success!");
 			console.dir(response);
+
 			defer.resolve(response);
-			$location.path('/dashboard');
+			
+			if(response.redirect && response.user) {
+				//important: set rootscope to contain the created user
+				$rootScope.currentUser = response.user;
+				$state.go('app.dashboard');	
+			}			
+
 		}, function(err, status) {
 			console.log("no post for you");
 			defer.reject(response);
@@ -56,6 +63,10 @@ var UserHelpers = function($http, $q, $location) {
 		return defer.promise;
 	};
 
+	User.currentUser = function() {
+		return $rootScope.currentUser;
+	};
+
 	
 
 	return User;
@@ -64,7 +75,7 @@ var UserHelpers = function($http, $q, $location) {
 
 angular
 	.module('synergyApp')
-	.factory('User', ['$http', '$q', '$location', UserHelpers]);
+	.factory('User', ['$http', '$q', '$state', '$rootScope', UserHelpers]);
 
 
 })();

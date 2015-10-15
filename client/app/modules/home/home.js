@@ -14,7 +14,10 @@ angular
 			url: '/home',
 			templateUrl: '/modules/home/home.html',
 			controller: 'HomeCtrl',
-			controllerAs: 'home'
+			controllerAs: 'home',
+			data: {
+				requireLogin: false
+			}
 		});
 	}])
 

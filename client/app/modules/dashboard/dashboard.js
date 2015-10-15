@@ -1,7 +1,7 @@
 (function() {
 'use strict';
 
-var DashboardCtrl = function($q, $http) {
+var DashboardCtrl = function($rootScope, $q, $http, User) {
 
 	this.message = "Welcome to the dashboard!";
 
@@ -11,15 +11,20 @@ angular
 	.module('dashboard', [])
 
 	.config(['$stateProvider', function($stateProvider) {
-		$stateProvider.state('dashboard', {
-			url: '/dashboard',
-			templateUrl: 'modules/dashboard/dashboard.html',
-			controller: 'DashboardCtrl',
-			controllerAs: 'dashboard'
-		});
+		$stateProvider
+			//child state of 'app'
+			.state('app.dashboard', {
+				url: '/dashboard',
+				templateUrl: 'modules/dashboard/dashboard.html',
+				controller: 'DashboardCtrl',
+				controllerAs: 'dashboard',
+				data: {
+					requireLogin: true
+				}
+			});
 	}])
 
-	.controller('DashboardCtrl', ['$q', '$http', DashboardCtrl]);
+	.controller('DashboardCtrl', ['$rootScope', '$q', '$http', 'User', DashboardCtrl]);
 
 
 })();

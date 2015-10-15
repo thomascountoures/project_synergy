@@ -40,7 +40,7 @@ var AUTH = {
 	  					if(username === user.username.toString() && user.password.toString() ) {
 	  						console.log("success! user has good credentials");	  						
 
-	  						//authetication success
+	  						//authetication success, send back user to .then() where 'db.login' is called in server.js
 	  						defer.resolve(user);
 	  						//connection.end();
 

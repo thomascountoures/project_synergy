@@ -66,7 +66,10 @@ angular
 				//path relative to index.html
 				templateUrl: 'modules/signup/signup.html',
 				controllerAs: 'signup',
-				controller: 'SignupCtrl'
+				controller: 'SignupCtrl',
+				data: {
+					requireLogin: false
+				}
 			});
 	}])
 

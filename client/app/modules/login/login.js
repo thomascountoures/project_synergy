@@ -1,8 +1,8 @@
 (function () {
 'use strict';
 
-//named controller for more helpful debugging
-var LoginCtrl = function($http, $q, User) {		
+//named controller function for more helpful debugging
+var LoginCtrl = function($rootScope, $http, $q, User) {		
 
 	function login() {
 		console.log("login");
@@ -17,11 +17,8 @@ var LoginCtrl = function($http, $q, User) {
 			console.log("valid form");
 			console.dir(user);
 			User.login(user)
-			.then(function(response) {
-				console.dir(response);
-				console.log(response.message);
-				console.log("user logged in");
-				return response;
+			.then(function(response) {				
+				console.log("user logged in");				
 			}, function(err, status) {
 				console.error("error, user couldn't login: " + err);
 			});
@@ -43,11 +40,14 @@ angular
 				//path relative to index.html
 				templateUrl: 'modules/login/login.html',
 				controllerAs: 'login',
-				controller: 'LoginCtrl'
+				controller: 'LoginCtrl',
+				data: {
+					requireLogin: false
+				}
 			});
 	}])
 
-	.controller('LoginCtrl', ['$http','$q', 'User', LoginCtrl]);
+	.controller('LoginCtrl', ['$rootScope', '$http', '$q', 'User', LoginCtrl]);
 
 
 })();
