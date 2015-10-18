@@ -26,6 +26,98 @@ var app = express();
 
 
 
+/* * * * * * * * * * * * * *
+ * Create MySQL connection *
+ * * * * * * * * * * * * * */
+
+var connection = db.createConnection();
+
+
+
+/* * * * * * * * * * * * * 
+ * Passport Configuration *
+ * * * * * * * * * * * * * */
+
+//Express Session middleware needs to be configured before passport.session()
+app.use(expressSession({ 
+	secret: 'lksadfjl2348902340sdfslj3408',
+	saveUninitialized: false,
+	resave: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//use local strategy
+passport.use(new passportLocal.Strategy(function(username, password, done) {
+	var username = username,
+		password = password;
+
+	console.log("local strategy running");	
+	
+	
+	db.login(username, password, connection) //call my db module API and perform login	  
+	  .then(function(user) { //the user is sent back as a result of the SQL query from the login() function in the db_module helper
+	  	//login success
+	  	console.log("promise results: ");
+	  	console.log("user id: " + user.id);
+	  	console.log("user name: " + user.first_name);
+	  	console.log("username: " + user.username);
+	  	/* 
+		When Passport authenticates a request, it parses the credentials contained in the request. It then 
+		invokes the verify callback with those credentials as arguments, in this case username and password. 
+		If the credentials are valid, the verify callback invokes done to supply Passport with the user 
+		that authenticated. */		
+	  	done(null, user.id);	  	
+	  }, function(error) {
+	  	//login error
+	  	console.log("login error");
+	  	console.dir(error);
+	  	done(null, false, {message: 'Incorrect username or password.'});
+  	});
+}));
+
+//serialize user into session - user object passed from 'done' parameter inside local strategy function
+passport.serializeUser(function(id, done) {
+	console.log("serializing");
+	//OKAY. THERE IS NO COOKIE. SESSION IS DONE SERVER SIDE. PASSPORT GIVES YOU ACCESS TO THE SESSION DATA
+	//BY ATTACHING A USER OBJECT TO THE CLIENT REQUEST. BUT THERE IS NO CLIENT SIDE SESSION OR COOKIE.
+	done(null, id);
+});
+
+//called on subsequent requests
+passport.deserializeUser(function(id, done) {
+	console.log("request being made");
+	
+	//perform query to hydrate session object for each request made to express
+	connection.query({
+		sql: 'SELECT * FROM `users` WHERE `id` = ?',
+		timeout: 40000,
+		values: [id]
+	}, function(error, results) {
+		console.log("query callback");
+		if(!error) {
+			console.log("select results : ");
+				console.dir(results);
+			var user = results.pop();
+			done(null, user);				
+		} else {
+			done(null, null);
+		}
+	});
+
+
+});
+
+
+
+/* * * * * * * * * * * * * 
+ * Initialize/On Load * *
+ * * * * * * * * * * * * */
+
+app.get("/", function(req, res) {	
+	res.sendFile(path.join(__dirname, '../client/app/', 'index.html'));	
+});
+
 
 /* * * * * * * * * 
  * Middleware * *
@@ -38,8 +130,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(flash());
 
-
-//mount paths
+//mount paths for files
 app.use('/modules', routes.serveModules());
 app.use("/assets", routes.serveAssets());
 app.use("/factories", routes.serveFactories());
@@ -49,118 +140,35 @@ app.use("/app",routes.serveBaseFiles());
 
 
 
+/* * * * * * * * * * 
+ * CRUD Operations * 
+ * * * * * * * * * * */
 
-/* * * * * * * * * * * * * 
- * Passport Configuration *
- * * * * * * * * * * * * * */
+ /* "Applications use APIs like humans use websites." */
 
-//Express Session middleware needs to be configured before passport.session()
-app.use(expressSession({
-	secret: 'lksadfjl2348902340sdfslj3408',
-	saveUninitialized: false,
-	resave: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+app.post('/users', User.createUser);
 
-//define passport local strategy
-var localStrategy = new passportLocal.Strategy(function(username, password, done) {
-	var username = username,
-		password = password;
-
-	console.log("local strategy running");
-	console.dir(db);
-	
-	//call my db module API and perform login
-	db.login(username, password)
-	  //the user is sent back as a result of the SQL query from the login() function in the db_module helper
-	  .then(function(user) {
-	  	//login success
-	  	console.log("promise results: ");
-	  	console.log("user id: " + user.id);
-	  	console.log("user name: " + user.first_name);
-	  	console.log("username: " + user.username);
-	  	/* 
-		When Passport authenticates a request, it parses the credentials contained in the request. It then 
-		invokes the verify callback with those credentials as arguments, in this case username and password. 
-		If the credentials are valid, the verify callback invokes done to supply Passport with the user 
-		that authenticated. */		
-	  	return done(null, user);	  	
-	  }, function(error) {
-	  	//login error
-	  	console.log("login error");
-	  	console.dir(error);
-	  	return done(null, false, {message: 'Incorrect username or password.'});
-  	});
-});
-
-//use local strategy
-passport.use(localStrategy);
-
-//serialize user into session - user object passed from 'done' parameter inside local strategy function
-passport.serializeUser(function(user, done) {
-	console.log("serialize user: " + user.id);
-	console.log("serialized user first name: " + user.first_name);
-	done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-	console.log("deserializing");
-	db.deserialize(id)
-	.then(function(user) {
-		done(null, user);
-	}, function(error) {
-		done(null, {message: error});
-	});
-});
-
-
-
-
-/* * * * * * * * * * * * * 
- * Initialize/On Load * *
- * * * * * * * * * * * * */
-
-app.get("/", function(req, res) {	
-	res.sendFile(path.join(__dirname, '../client/app/', 'index.html'));
-	res.status(200);	
-});
-
-
-/* * * * * * * * * * * * * * * 
- * REST API / CRUD Operations * 
- * * * * * * * * * * * * * *  */
-
-app.post('/api/users', User.createUser);
-
-app.post('/login', passport.authenticate('local'), function(req, res) {
-	//req.user holds the returned session object from the local strategy authentication
-	console.log('authentication success');
-	console.log(req.user.first_name);
-	console.log(req.user.message);	
-	res.json({
-		redirect: true,
-		user: req.user
-	});
-	res.status(200);
-});
-
-app.get('/dashboard', function(req, res) {
-	console.log("dashboard!");	
-	console.log(req.user.first_name);	
-	//res.sendFile(path.join(__dirname, '../client/app/modules/dashboard', 'dashboard.html'));
-	if(!req.user.id) {
-		console.log("not authenticated");
-		res.redirect('/login');
-	} else {
-		res.json({
-			user: req.user
+app.post('/login', passport.authenticate('local'), function(req, res, next) {
+	if(req.user) { //req.user holds the returned session object from the local strategy authentication
+		console.log('authentication success');
+		var userID = req.user;
+		res.cookie('userID', userID, { httpOnly: false, maxAge: 40000 }); //need to set HTTP only to false in order for client to access server side cookie
+		res.send({
+			redirect: true,
+			userID: userID // serialized user object with only ID (passed here from passport)			
 		});
-	}
-	
-	//console.dir(user.first_name);
-	res.status(200);
+	}	
 });
+
+app.use('/logout', function(req, res, next) {
+	console.log("logging out...");
+	req.logout();	
+	res.clearCookie('userID'); //make sure to clear cookie set when user logged in, otherwise pages that require login can still be accessed
+	res.redirect('/#/login');
+	res.end();	
+});
+
+
 
 
 

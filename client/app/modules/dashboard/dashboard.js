@@ -3,8 +3,12 @@
 
 var DashboardCtrl = function($rootScope, $q, $http, User) {
 
-	this.message = "Welcome to the dashboard!";
+	
+	this.user = User.currentUser;
+	console.log("current user from controller: ");
+	console.dir(this.user);	
 
+	this.logout = User.logout;
 };
 
 angular
@@ -17,10 +21,7 @@ angular
 				url: '/dashboard',
 				templateUrl: 'modules/dashboard/dashboard.html',
 				controller: 'DashboardCtrl',
-				controllerAs: 'dashboard',
-				data: {
-					requireLogin: true
-				}
+				controllerAs: 'dashboard'
 			});
 	}])
 

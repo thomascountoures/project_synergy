@@ -6,6 +6,7 @@ You can clone this repo, but I've obviously left out the database information li
 
 * AngularJS
 * Angular UI Router
+* Angular Cookies
 * Bootstrap
 * Underscore.js
 

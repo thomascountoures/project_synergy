@@ -1,7 +1,7 @@
 (function() {
 'use strict';
 
-var UserHelpers = function($http, $q, $state, $rootScope) {
+var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 
 	var User = {};
 
@@ -10,7 +10,7 @@ var UserHelpers = function($http, $q, $state, $rootScope) {
 		
 		var defer = $q.defer();
 
-		$http.post('/api/users', user)
+		$http.post('/users', user)
 		.success(function(response) {
 			defer.resolve(response);
 		})
@@ -30,12 +30,19 @@ var UserHelpers = function($http, $q, $state, $rootScope) {
 			console.log("post success!");
 			console.dir(response);
 
-			defer.resolve(response);
 			
-			if(response.redirect && response.user) {
+			
+			console.log("outside redirecting to dashboard");
+			if(response.redirect && response.userID) {
+				console.log("redirecting to dashboard");
 				//important: set rootscope to contain the created user
-				$rootScope.currentUser = response.user;
+				
 				$state.go('app.dashboard');	
+				var cookie = Cookie.getSessionCookie();
+				console.log("cookie from user.login : ");
+				console.dir(cookie);
+
+				defer.resolve(response);
 			}			
 
 		}, function(err, status) {
@@ -47,10 +54,21 @@ var UserHelpers = function($http, $q, $state, $rootScope) {
 
 	};
 
+	User.logout = function() {
+		var defer = $q.defer();
+
+		$http.get('/logout')
+		.success(function(response) {
+			defer.resolve(response);
+		}, function(err) {
+			defer.reject(err);
+		});
+	};
+
 	User.getUsers = function() {
 		var defer = $q.defer();
 
-		$http.get('/api/users')
+		$http.get('/users')
 		.success(function(response) {
 			defer.resolve(response);
 			return response;
@@ -64,7 +82,19 @@ var UserHelpers = function($http, $q, $state, $rootScope) {
 	};
 
 	User.currentUser = function() {
-		return $rootScope.currentUser;
+		var defer = $q.defer();		
+		var userID = Cookie.getSessionCookie();
+
+		console.log("getting current user");
+		$http.get('/users/:userID')
+		.then(function(user) {
+			console.log("got current user!");
+			defer.resolve(user);
+		}, function(err) {
+			defer.reject(err);			
+		});
+
+		return defer.promise;
 	};
 
 	
@@ -75,7 +105,7 @@ var UserHelpers = function($http, $q, $state, $rootScope) {
 
 angular
 	.module('synergyApp')
-	.factory('User', ['$http', '$q', '$state', '$rootScope', UserHelpers]);
+	.factory('User', ['$http', '$q', '$state', '$rootScope', 'Cookie', UserHelpers]);
 
 
 })();

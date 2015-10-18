@@ -6,12 +6,12 @@ var q 	  = require('../node_modules/q'),
 var AUTH = {
 
 	//note: assumes database table is called 'users'
-	login: function(username, password) {
+	login: function(username, password, connection) {
 		console.log("greetings from login user");		
 		console.log("username: " + username);
 		console.log("password: " + password);
 
-		var connection = QUERY.createConnection();
+		//var connection = QUERY.createConnection();
 
 		if(typeof username === 'string' && typeof password === 'string') {
 			var sql = 'SELECT * FROM `users` WHERE `username`= ? and `password` = ?';
@@ -58,10 +58,7 @@ var AUTH = {
 	  				console.log(results);
 	  				defer.reject(error);
 	  			}
-		  	});
-
-			//End connection
-			connection.end();
+		  	});			
 
 			return defer.promise;
 
@@ -70,10 +67,10 @@ var AUTH = {
 		}
 	},
 
-	deserialize: function(id) {		
+	deserialize: function(id, connection) {		
 		var defer = q.defer();
 		console.log("logout id: " + id);
-		QUERY.select('*', 'users', '`id`', id)
+		QUERY.select('*', 'users', '`id`', id, connection)
 		.then(function(user) {
 		 	defer.resolve(user);
 		}, function(error) {
@@ -166,30 +163,35 @@ var QUERY = {
 		}
 	},
 
-	select: function(columns, table, item, itemValue) {
-
-		var connection = QUERY.createConnection();
+	select: function(columns, table, item, itemValue, connection) {		
 
 		if(typeof table == 'string' && typeof item == 'string') {
-			var sql = "SELECT " + columns + " FROM " + table + " WHERE " + item + " = ?",
-				itemValue = itemValue.toString();			
+			var sql 	  = "SELECT " + columns + " FROM " + table + " WHERE " + item + " = ?",
+				itemValue = itemValue.toString(),
+				connection = connection;			
 
 		 	//Set up promise
 		  	var defer = q.defer();
 
 		  	console.log("selecting value...");
+		  	console.log(sql);
+		  	console.log(itemValue);
 		  	connection.query({
-		  		sql: sql,
-		  		timeout: 40000,
+		  		sql: 'SELECT * FROM `users` WHERE `id` = ?',
+		  		timeout: 5000,
 		  		values: [itemValue],
 		  		function(error, results) {		  			
 		  			if(!error) {
 		  				var results = results;
+		  				console.log("select results : ");
+		  				console.dir(results);
 		  				//results is an array of JSON objects (database rows)
 		  				if(results.length > 0) {
+		  					console.log("got a result");
 		  					defer.resolve(results);		  					
 		  				}
 		  			} else {
+		  				console.log("select error");
 		  				defer.reject(error);
 		  			}
 		  		}
@@ -206,8 +208,10 @@ var QUERY = {
 }
 
 //assign functions
-module.exports.login = AUTH.login;
-module.exports.deserialize = AUTH.deserialize;
-module.exports.insert = QUERY.insert;
+module.exports.login 			= AUTH.login;
+module.exports.deserialize 		= AUTH.deserialize;
+module.exports.insert 			= QUERY.insert;
+module.exports.createConnection = QUERY.createConnection;
+module.exports.select 			= QUERY.select;
 
 
