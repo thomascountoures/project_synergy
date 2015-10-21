@@ -13,7 +13,7 @@ angular
 		'signup',
 		'login',
 		'dashboard'
-	])
+	])	
 
 	.config([
 		'$urlRouterProvider',
@@ -24,6 +24,11 @@ angular
 				.otherwise('/home');
 
 			 $stateProvider
+			 	// .state('/', {
+			 	// 	url:'',
+			 	// 	controller: 'MainCtrl',
+			 	// 	controllerAs: 'main'
+			 	// })
 			 	.state('app', {
 					/*An abstract state can have child states but cannot get activated itself. An 'abstract' state is simply a state 
 					that can't be transitioned to. It is activated implicitly when one of its descendants are activated.*/
@@ -35,6 +40,7 @@ angular
 						requireLogin: true
 					}					
 				 });
+
 			/*If session expires and user gets 401, or not authenticated error.
 
 			The interceptors are service factories that are registered with the $httpProvider by adding them to the 
@@ -72,6 +78,13 @@ angular
 			]);
 		}
 	])
+
+	// .controller('MainCtrl', [		
+	// 	'User', 
+	// 	function(User) {
+	// 		this.$watch()
+	// 	}
+	// ])
 
 	.run([
 		'$rootScope',

@@ -4,9 +4,9 @@
 var DashboardCtrl = function($rootScope, $q, $http, User) {
 
 	
-	this.user = User.currentUser;
+	this.user = User.currentUser();
 	console.log("current user from controller: ");
-	console.dir(this.user);	
+	console.dir(this.user);
 
 	this.logout = User.logout;
 };

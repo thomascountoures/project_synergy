@@ -33,7 +33,7 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 			
 			
 			console.log("outside redirecting to dashboard");
-			if(response.redirect && response.userID) {
+			if(response.redirect && response.username) {
 				console.log("redirecting to dashboard");
 				//important: set rootscope to contain the created user
 				
@@ -82,17 +82,15 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 	};
 
 	User.currentUser = function() {
-		var defer = $q.defer();		
-		var userID = Cookie.getSessionCookie();
+		var defer = $q.defer();	
 
-		console.log("getting current user");
-		$http.get('/users/:userID')
-		.then(function(user) {
-			console.log("got current user!");
+		var user = Cookie.getSessionCookie();
+
+		if(user) {
 			defer.resolve(user);
-		}, function(err) {
-			defer.reject(err);			
-		});
+		} else {
+			defer.reject();
+		}
 
 		return defer.promise;
 	};
