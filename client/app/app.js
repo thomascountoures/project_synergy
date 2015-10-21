@@ -103,7 +103,7 @@ angular
 				if(requireLogin === true && typeof user == 'undefined') {
 					console.log('you are undefined');
 					event.preventDefault();
-					$state.go('login');
+					$state.go('app.login', {});
 				} 
 				
 				

@@ -35,7 +35,7 @@ angular
 
 	.config(['$stateProvider', function($stateProvider) {
 		$stateProvider
-			.state('login', {
+			.state('app.login', {
 				url: '/login',
 				//path relative to index.html
 				templateUrl: 'modules/login/login.html',

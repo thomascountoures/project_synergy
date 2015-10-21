@@ -26,28 +26,28 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 		var defer = $q.defer();			
 		
 		$http.post('/login', user)
-		.success(function(response) {
+		.success(function(authenticatedUser) {
 			console.log("post success!");
-			console.dir(response);
+			console.dir(authenticatedUser);
 
 			
 			
 			console.log("outside redirecting to dashboard");
-			if(response.redirect && response.username) {
+			if(authenticatedUser.redirect && authenticatedUser.username) {
 				console.log("redirecting to dashboard");
 				//important: set rootscope to contain the created user
 				
-				$state.go('app.dashboard');	
+				$state.go('app.dashboard', {userInformation: authenticatedUser});	
 				var cookie = Cookie.getSessionCookie();
 				console.log("cookie from user.login : ");
 				console.dir(cookie);
 
-				defer.resolve(response);
+				defer.resolve(authenticatedUser);
 			}			
 
 		}, function(err, status) {
 			console.log("no post for you");
-			defer.reject(response);
+			defer.reject(err);
 		});
 
 		return defer.promise;

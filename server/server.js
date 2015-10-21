@@ -180,7 +180,7 @@ app.post('/login', passport.authenticate('local'), function(req, res, next) {
 			firstname: firstname,
 			lastname: lastname
 		};
-		
+
 		var username  = req.user.username;
 		var firstname = req.user.first_name;
 		var lastname  = req.user.last_name;
@@ -204,7 +204,7 @@ app.use('/logout', function(req, res, next) {
 	console.log("logging out...");
 	req.logout();	
 	res.clearCookie('userID'); //make sure to clear cookie set when user logged in, otherwise pages that require login can still be accessed
-	res.redirect('/#/login');
+	res.redirect('/#/app/login');
 	res.end();	
 });
 
