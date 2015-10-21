@@ -39,4 +39,4 @@ Began adding custom directives to dashboard. Re-styled and marked up app a bit.
 
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen8.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen9.png)
-![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen1.png)
+![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen10.png)
