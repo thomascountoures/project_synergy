@@ -1,10 +1,10 @@
 //Color Scheme:
 
-$green: #c5d5cb;
-$grey: #9fa8a3; 
+$green: #617968;
+$grey: #2D2D2D; 
 $beige: #e3e0cf;
 $white: #fff;
-$light_grey: #ddd;
+$light_grey: #ABABAB;
 
 //Fonts
 @font-face {
@@ -31,8 +31,14 @@ $light_grey: #ddd;
 	box-sizing:border-box;
 }
 body {
-  background-color:$grey;
-  font-family:'kelson-light', Arial, sans-serif; 
+	font-family:'kelson-light', Arial, sans-serif; 
+}
+.home,
+.app\.login {
+	background-color:$grey;
+}
+.app\.dashboard {
+	background-color:$light_grey;
 }
 
 //mixins
@@ -57,7 +63,7 @@ body {
 
 //Reusable styles:
 #main-title h1 {
-	color:$green;
+	color:$white;
 	text-transform: lowercase;
 	text-align: center;
 	margin-bottom:20px;
@@ -98,10 +104,14 @@ body {
 	font-weight:bold;
 }
 
+.right {
+	float:right;
+}
+
 // Signup Form, Registration Form
 #signup-form,
 #login-form {
-	background-color: $beige;
+	background-color: $light_grey;
 	@include border-radius(5px);
 	@include box-shadow(0, 2px, 2px, 0, $light_grey);	
 	padding:20px;	
@@ -117,7 +127,7 @@ body {
 	}
 	input[type="submit"] {
 		width:auto;
-		background-color:$green;
+		background-color:$grey;
 		color:$white;
 	}
 	label,
@@ -135,3 +145,32 @@ body {
 	margin-top:40px;	
 	color:$white;
 }
+
+// Dashboard Navbar
+
+.dashboard.navbar {
+	background-color:$grey;
+	color:$white;
+	ul {
+		padding:0;
+		list-style:none;
+		li {
+			text-decoration:none;
+			display:inline-block;
+			a {
+				color:$white;
+			}
+		}
+	}
+	.project-title {
+		padding-top:10px;
+	}
+}
+
+
+
+
+
+
+
+

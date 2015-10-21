@@ -93,6 +93,7 @@ angular
 		'Cookie',
 		function($rootScope, $location, $state, Cookie) {
 			$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
+				$rootScope.$state = $state;
 				//get requireLogin data from state (data object is configured in each controller in stateProvider.state)
 				var requireLogin = toState.data.requireLogin;
 				var user = Cookie.getSessionCookie();

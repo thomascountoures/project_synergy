@@ -29,9 +29,23 @@ angular
 				},
 				templateUrl: 'modules/dashboard/dashboard.html',
 				controller: 'DashboardCtrl',
-				controllerAs: 'dashboard'
+				controllerAs: 'dashboard'						
 			});
 	}])
+
+	.directive('navigation', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'modules/dashboard/directives/navigation.html'
+		}
+	})
+
+	.directive('dashboardMain', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'modules/dashboard/directives/main.html'
+		}
+	})
 
 	.controller('DashboardCtrl', ['$rootScope', '$q', '$http', 'User', 'userInformation', DashboardCtrl]);
 

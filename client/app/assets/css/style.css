@@ -14,11 +14,17 @@
   box-sizing: border-box; }
 
 body {
-  background-color: #9fa8a3;
   font-family: 'kelson-light', Arial, sans-serif; }
 
+.home,
+.app\.login {
+  background-color: #2D2D2D; }
+
+.app\.dashboard {
+  background-color: #ABABAB; }
+
 #main-title h1 {
-  color: #c5d5cb;
+  color: #fff;
   text-transform: lowercase;
   text-align: center;
   margin-bottom: 20px;
@@ -31,25 +37,25 @@ body {
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   border-radius: 10px;
-  -webkit-box-shadow: 0 1px 2px 0 #ddd;
-  -moz-box-shadow: 0 1px 2px 0 #ddd;
-  -ms-box-shadow: 0 1px 2px 0 #ddd;
-  box-shadow: 0 1px 2px 0 #ddd;
+  -webkit-box-shadow: 0 1px 2px 0 #ABABAB;
+  -moz-box-shadow: 0 1px 2px 0 #ABABAB;
+  -ms-box-shadow: 0 1px 2px 0 #ABABAB;
+  box-shadow: 0 1px 2px 0 #ABABAB;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -ms-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in; }
   .link.beige {
     background-color: #e3e0cf;
-    color: #9fa8a3; }
+    color: #2D2D2D; }
   .link.green {
-    background-color: #c5d5cb;
+    background-color: #617968;
     color: #fff; }
   .link.grey {
-    background-color: #9fa8a3;
+    background-color: #2D2D2D;
     color: #fff; }
   .link:hover {
-    background-color: #ddd;
+    background-color: #ABABAB;
     color: #fff;
     text-decoration: none; }
 
@@ -60,17 +66,20 @@ body {
   color: #ff0033;
   font-weight: bold; }
 
+.right {
+  float: right; }
+
 #signup-form,
 #login-form {
-  background-color: #e3e0cf;
+  background-color: #ABABAB;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 2px 2px 0 #ddd;
-  -moz-box-shadow: 0 2px 2px 0 #ddd;
-  -ms-box-shadow: 0 2px 2px 0 #ddd;
-  box-shadow: 0 2px 2px 0 #ddd;
+  -webkit-box-shadow: 0 2px 2px 0 #ABABAB;
+  -moz-box-shadow: 0 2px 2px 0 #ABABAB;
+  -ms-box-shadow: 0 2px 2px 0 #ABABAB;
+  box-shadow: 0 2px 2px 0 #ABABAB;
   padding: 20px; }
   #signup-form label,
   #login-form label {
@@ -88,7 +97,7 @@ body {
   #signup-form input[type="submit"],
   #login-form input[type="submit"] {
     width: auto;
-    background-color: #c5d5cb;
+    background-color: #2D2D2D;
     color: #fff; }
   #signup-form label,
   #signup-form input,
@@ -102,5 +111,19 @@ body {
 .not-a-user {
   margin-top: 40px;
   color: #fff; }
+
+.dashboard.navbar {
+  background-color: #2D2D2D;
+  color: #fff; }
+  .dashboard.navbar ul {
+    padding: 0;
+    list-style: none; }
+    .dashboard.navbar ul li {
+      text-decoration: none;
+      display: inline-block; }
+      .dashboard.navbar ul li a {
+        color: #fff; }
+  .dashboard.navbar .project-title {
+    padding-top: 10px; }
 
 /*# sourceMappingURL=style.css.map */

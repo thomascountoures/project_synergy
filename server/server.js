@@ -203,7 +203,7 @@ app.post('/login', passport.authenticate('local'), function(req, res, next) {
 app.use('/logout', function(req, res, next) {
 	console.log("logging out...");
 	req.logout();	
-	res.clearCookie('userID'); //make sure to clear cookie set when user logged in, otherwise pages that require login can still be accessed
+	res.clearCookie('user'); //make sure to clear cookie set when user logged in, otherwise pages that require login can still be accessed
 	res.redirect('/#/app/login');
 	res.end();	
 });
