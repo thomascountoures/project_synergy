@@ -12,11 +12,13 @@ I am using the following bower components: (will continue to update)
 * Bootstrap
 * Underscore.js
 
-# screenshots
+# development screenshots
+
+Here are some screenshots during development so far.
 
 ## October 15, 2015
 
-Here are some screenshots during development so far.
+Working on authentication system.
 
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen1.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen2.png)
@@ -25,6 +27,8 @@ Here are some screenshots during development so far.
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen5.png)
 
 ## October 20, 2015
+
+User information now successfully being transferred between ui router states.
 
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen6.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen7.png)
