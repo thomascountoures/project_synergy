@@ -32,3 +32,11 @@ User information now successfully being transferred between ui router states.
 
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen6.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen7.png)
+
+## October 21, 2015
+
+Began adding custom directives to dashboard. Re-styled and marked up app a bit.
+
+![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen8.png)
+![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen9.png)
+![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen1.png)
