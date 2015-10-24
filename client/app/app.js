@@ -12,7 +12,8 @@ angular
 		'home',
 		'signup',
 		'login',
-		'dashboard'
+		'dashboard',
+		'dashboardProfile'
 	])	
 
 	.config([
@@ -20,25 +21,28 @@ angular
 		'$httpProvider',
 		'$stateProvider',		
 		function($urlRouterProvider, $httpProvider, $stateProvider) {
+
+			//redirect user back home if no such requested page exists
 			$urlRouterProvider
 				.otherwise('/home');
 
-			 $stateProvider
-			 	// .state('/', {
-			 	// 	url:'',
-			 	// 	controller: 'MainCtrl',
-			 	// 	controllerAs: 'main'
-			 	// })
+			var AppCtrl = function() {
+
+				this.currentUser = null;				
+
+				this.setCurrentUser = function(user) {
+					this.currentUser = user;
+				};
+
+			}
+
+			 $stateProvider			 	
 			 	.state('app', {
 					/*An abstract state can have child states but cannot get activated itself. An 'abstract' state is simply a state 
 					that can't be transitioned to. It is activated implicitly when one of its descendants are activated.*/
 					url: '/app',
 					abstract: true,
-					template: '<div ui-view />',
-					data: {
-						//will apply to all children of 'app'
-						requireLogin: true
-					}					
+					template: '<div ui-view />'									
 				 });
 
 			/*If session expires and user gets 401, or not authenticated error.

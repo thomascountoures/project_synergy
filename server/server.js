@@ -174,17 +174,18 @@ app.get('/users', function(req, res, next) {
 
 app.post('/login', passport.authenticate('local'), function(req, res, next) {
 	if(req.user) { //req.user holds the returned session object from the local strategy authentication
-		console.log('authentication success');
-		var user = {
-			username: username,
-			firstname: firstname,
-			lastname: lastname
-		};
+		console.log('authentication success');		
 
 		var username  = req.user.username;
 		var firstname = req.user.first_name;
 		var lastname  = req.user.last_name;
 		var userID	  = req.user.id;
+
+		var user = {
+			username: username,
+			firstname: firstname,
+			lastname: lastname
+		};
 		
 		console.log("user: ");
 		console.dir(req.user);

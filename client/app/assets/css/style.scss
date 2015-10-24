@@ -37,7 +37,8 @@ body {
 .app\.login {
 	background-color:$grey;
 }
-.app\.dashboard {
+.app\.dashboard\.main,
+.app\.dashboard\.profile {
 	background-color:$light_grey;
 }
 
@@ -156,11 +157,11 @@ body {
 		list-style:none;
 		li {
 			text-decoration:none;
-			display:inline-block;
-			a {
-				color:$white;
-			}
+			display:inline-block;			
 		}
+	}
+	a {
+		color:$white;
 	}
 	.project-title {
 		padding-top:10px;

@@ -20,7 +20,8 @@ body {
 .app\.login {
   background-color: #2D2D2D; }
 
-.app\.dashboard {
+.app\.dashboard\.main,
+.app\.dashboard\.profile {
   background-color: #ABABAB; }
 
 #main-title h1 {
@@ -121,8 +122,8 @@ body {
     .dashboard.navbar ul li {
       text-decoration: none;
       display: inline-block; }
-      .dashboard.navbar ul li a {
-        color: #fff; }
+  .dashboard.navbar a {
+    color: #fff; }
   .dashboard.navbar .project-title {
     padding-top: 10px; }
 

@@ -5,7 +5,7 @@
 var LoginCtrl = function($rootScope, $http, $q, User) {		
 
 	function login() {
-		console.log("login");
+		
 		var form = this.loginForm;
 
 		var user = {

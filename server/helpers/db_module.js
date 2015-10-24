@@ -91,9 +91,9 @@ var QUERY = {
 		var mysql = require('mysql');
 		var connection = mysql.createConnection({
 				host: 'localhost',
-				user: '',
-				password: '',
-				database: ''
+				user: 'mano',
+				password: 'Actorthunder1*',
+				database: 'project_synergy'
 			});
 
 		console.log("creating connection...");

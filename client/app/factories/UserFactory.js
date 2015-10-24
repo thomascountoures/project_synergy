@@ -8,22 +8,22 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 	User.create = function(user) {
 		//get user information, save that user to the REST api (/api/users)		
 		
-		var defer = $q.defer();
+		var deferred = $q.defer();
 
 		$http.post('/users', user)
 		.success(function(response) {
-			defer.resolve(response);
+			deferred.resolve(response);
 		})
 		.error(function(err, status) {
-			defer.reject(err);
+			deferred.reject(err);
 		});
 		
 		console.dir(User);
-		return defer.promise;		
+		return deferred.promise;		
 	};
 
 	User.login = function(user) {
-		var defer = $q.defer();			
+		var deferred = $q.defer();			
 		
 		$http.post('/login', user)
 		.success(function(authenticatedUser) {
@@ -35,64 +35,75 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 			console.log("outside redirecting to dashboard");
 			if(authenticatedUser.redirect && authenticatedUser.username) {
 				console.log("redirecting to dashboard");
-				//important: set rootscope to contain the created user
-				
-				$state.go('app.dashboard', {userInformation: authenticatedUser});	
-				var cookie = Cookie.getSessionCookie();
-				console.log("cookie from user.login : ");
-				console.dir(cookie);
-
-				defer.resolve(authenticatedUser);
+				console.log("authenticated user: ");
+				console.dir(authenticatedUser);
+				//important: store current user
+				User.currentUser(authenticatedUser);
+				var newUser = User.currentUser();
+				console.log("new set user: ");
+				console.dir(newUser);
+				deferred.resolve(authenticatedUser);
+				$state.go('app.dashboard.main');								
 			}			
 
 		}, function(err, status) {
 			console.log("no post for you");
-			defer.reject(err);
+			deferred.reject(err);
 		});
 
-		return defer.promise;
+		return deferred.promise;
 
 	};
 
 	User.logout = function() {
-		var defer = $q.defer();
+		var deferred = $q.defer();
 
 		$http.get('/logout')
 		.success(function(response) {
-			defer.resolve(response);
+			deferred.resolve(response);
 		}, function(err) {
-			defer.reject(err);
+			deferred.reject(err);
 		});
 	};
 
 	User.getUsers = function() {
-		var defer = $q.defer();
+		var deferred = $q.defer();
+		var users = [];
 
 		$http.get('/users')
 		.success(function(response) {
-			defer.resolve(response);
-			return response;
+			users.push(response);
+			deferred.resolve(users);			
 		})
 		.error(function(err, status) {
-			defer.reject(err);
+			deferred.reject(err);
 		});
 		
+		return users;
 
-		return defer.promise;
+		return deferred.promise;
 	};
 
-	User.currentUser = function() {
-		var defer = $q.defer();	
+	User.currentUser = function(setUser) {
+		console.log("user.currentUser: ");
+		console.dir(setUser);
+		var deferred = $q.defer();
+		var user = [];
 
-		var user = Cookie.getSessionCookie();
-
-		if(user) {
-			defer.resolve(user);
+		if(setUser) {
+			console.log("setting user...");
+			user.push(setUser);
+			console.log(user);
+			deferred.resolve(user);			
 		} else {
-			defer.reject();
+			if(user) {
+				deferred.resolve(user);
+			} else {
+				deferred.reject();
+			}
 		}
 
-		return defer.promise;
+		return deferred.promise;
 	};
 
 	
