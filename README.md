@@ -50,7 +50,7 @@ I realized I wasn't going about doing authentication and storing user informatio
 > client side after authentication, on top of still using server sessions. User 
 > information now being stored in topmost scope, (but not rootScope), as opposed
 > to storing user information inside stateParams (user becomes null after
-> changing states this way)."
+> changing states this way).
 
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen11.png)
 ![alt tag](https://raw.github.com/thomascountoures/project_synergy/screenshots/screenshots/screen12.png)
