@@ -4,14 +4,14 @@
 		<header id="main-title">
 			<h1>Project_Synergy</h1>			
 		</header>
-		<form ng-submit="login.login()" ng-controller="LoginCtrl" id="login-form" name="login.loginForm" novalidate>			
+		<form ng-submit="login.login(login.credentials)" ng-controller="LoginCtrl" id="login-form" name="login.loginForm" novalidate>			
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-4">
 						<label for="username">Username</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" placeholder="Username" ng-model="login.username" name="username"/>
+						<input type="text" placeholder="Username" ng-model="login.credentials.username" name="username"/>
 					</div>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 						<label for="password">Password</label>
 					</div>
 					<div class="col-md-8">
-						<input type="password" placeholder="Password" ng-model="login.password" name="password" />
+						<input type="password" placeholder="Password" ng-model="login.credentials.password" name="password" />
 					</div>
 				</div>
 			</div>
@@ -36,6 +36,8 @@
 			<fieldset>
 				<input type="submit" value="Login" class="btn"/>
 			</fieldset>
+
+			<div ng-show="login.loginFailed === true">Incorrect credentials</div>
 			
 		</form>
 

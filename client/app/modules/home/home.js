@@ -9,14 +9,14 @@ var HomeCtrl = function($q) {
 angular
 	.module('home', [])
 
-	.config(['$stateProvider', function($stateProvider) {
+	.config(['$stateProvider', 'USER_ROLES', function($stateProvider, USER_ROLES) {
 		$stateProvider.state('home', {
 			url: '/home',
 			templateUrl: '/modules/home/home.html',
 			controller: 'HomeCtrl',
 			controllerAs: 'home',
 			data: {
-				requireLogin: false
+				authorizedUsers: [USER_ROLES.all]
 			}
 		});
 	}])

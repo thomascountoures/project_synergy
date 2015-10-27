@@ -131,9 +131,10 @@ app.use(bodyParser.urlencoded({
 app.use(flash());
 
 //mount paths for files
+app.use('/factories', routes.serveFactories());
+app.use('/services', routes.serveServices());
 app.use('/modules', routes.serveModules());
 app.use("/assets", routes.serveAssets());
-app.use("/factories", routes.serveFactories());
 app.use("/views", routes.serveViews());
 app.use("/bower_components", routes.serveBowerComponents());
 app.use("/app",routes.serveBaseFiles());
@@ -182,6 +183,7 @@ app.post('/login', passport.authenticate('local'), function(req, res, next) {
 		var userID	  = req.user.id;
 
 		var user = {
+			userID: userID,
 			username: username,
 			firstname: firstname,
 			lastname: lastname

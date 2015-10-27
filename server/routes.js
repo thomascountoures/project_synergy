@@ -7,6 +7,11 @@ module.exports.serveFactories = function(req, res, next) {
 	next();
 }
 
+module.exports.serveServices = function(req, res, next) {
+	return express.static(path.join(__dirname, '../client/app/services'));
+	next();
+}
+
 module.exports.serveModules = function (req, res, next) {	
 	return express.static(path.join(__dirname, '../client/app/modules'));
 	next();

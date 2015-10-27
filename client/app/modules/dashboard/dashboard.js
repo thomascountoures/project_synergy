@@ -1,29 +1,17 @@
 (function() {
 'use strict';
 
-var DashboardCtrl = function($scope, $q, $http, User, userInformation) {
-	
-	User.currentUser()
-	.then(function(user) {
-		this.user = user;
-	}, function(err) {
-		return err;
-	});
-	
-	console.log("this.user: ");
-	console.dir(this.user);
-
-	// $scope.$watch( User.currentUser, function(currentUser) {
-	// 	this.user = currentUser;
-	// });
-
+var DashboardCtrl = function($scope, $q, $http, User) {
+		
 	this.logout = User.logout;
+
+	this.user = $scope.currentUser;
 };
 
 angular
 	.module('dashboard', [])
 
-	.config(['$stateProvider', function($stateProvider) {
+	.config(['$stateProvider', 'USER_ROLES', function($stateProvider, USER_ROLES) {
 		$stateProvider
 			//child state of 'app'
 			.state('app.dashboard', {
@@ -32,7 +20,7 @@ angular
 				templateUrl: 'modules/dashboard/dashboard-scaffolding.html',
 				data: {
 					//will apply to all children of 'dashboard'
-					requireLogin: true
+					authorizedRoles: [USER_ROLES.admin, USER_ROLES.registered]
 				}					
 			})
 			.state('app.dashboard.main', {

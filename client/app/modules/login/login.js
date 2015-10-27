@@ -2,29 +2,47 @@
 'use strict';
 
 //named controller function for more helpful debugging
-var LoginCtrl = function($rootScope, $http, $q, User) {		
+var LoginCtrl = function($rootScope, $scope, $http, User, $state, AUTH_EVENTS) {
 
-	function login() {
-		
+	var that = this;	
+	var loginFailed = false;
+
+	this.credentials = {
+		username: '',
+		password: ''
+	};	
+
+	function login(credentials) {
 		var form = this.loginForm;
 
-		var user = {
-			username: this.username,
-			password: this.password
-		}		
-		
-		if(form.$valid) {
-			console.log("valid form");
-			console.dir(user);
-			User.login(user)
-			.then(function(response) {				
-				console.log("user logged in");				
+		if(form.$valid) {			
+			User
+			.login(credentials)
+			.then(function(credentials) {				
+				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+				$scope.setCurrentUser(credentials);				
 			}, function(err, status) {
-				console.error("error, user couldn't login: " + err);
+				$rootScope.$broadcast(AUTH_EVENTS.loginFailed);				
 			});
-		}
-		
+		}	
 	}
+
+	$scope.$on(AUTH_EVENTS.loginFailed, function(event) {
+		loginFailed = true;
+	});
+
+	$scope.$on(AUTH_EVENTS.loginSuccess, function(event) {
+		$state.go('app.dashboard.main', {});
+	});
+
+	$scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
+		event.preventDefault();		
+	});
+
+	$scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
+		event.preventDefault();
+		$state.go('app.login');
+	});
 
 	this.login = login;
 
@@ -33,7 +51,7 @@ var LoginCtrl = function($rootScope, $http, $q, User) {
 angular
 	.module('login', [])
 
-	.config(['$stateProvider', function($stateProvider) {
+	.config(['$stateProvider', 'USER_ROLES', function($stateProvider, USER_ROLES) {
 		$stateProvider
 			.state('app.login', {
 				url: '/login',
@@ -42,12 +60,20 @@ angular
 				controllerAs: 'login',
 				controller: 'LoginCtrl',
 				data: {
-					requireLogin: false
-				}
+					authorizedRoles: [USER_ROLES.all]
+				}				
 			});
 	}])
 
-	.controller('LoginCtrl', ['$rootScope', '$http', '$q', 'User', LoginCtrl]);
+	.controller('LoginCtrl', [
+		'$rootScope', 
+		'$scope', 
+		'$http', 
+		'User', 
+		'$state',
+		'AUTH_EVENTS',
+		LoginCtrl
+	]);
 
 
 })();

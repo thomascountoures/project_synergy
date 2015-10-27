@@ -1,7 +1,7 @@
 (function() {
 'use strict';
 
-var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
+var UserHelpers = function($http, $q, $state, Cookie, Session, $rootScope) {
 
 	var User = {};
 
@@ -10,44 +10,35 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 		
 		var deferred = $q.defer();
 
-		$http.post('/users', user)
+		$http
+		.post('/users', user)
 		.success(function(response) {
 			deferred.resolve(response);
 		})
 		.error(function(err, status) {
 			deferred.reject(err);
 		});
-		
-		console.dir(User);
+				
 		return deferred.promise;		
 	};
 
 	User.login = function(user) {
 		var deferred = $q.defer();			
 		
-		$http.post('/login', user)
-		.success(function(authenticatedUser) {
-			console.log("post success!");
-			console.dir(authenticatedUser);
-
-			
-			
-			console.log("outside redirecting to dashboard");
-			if(authenticatedUser.redirect && authenticatedUser.username) {
-				console.log("redirecting to dashboard");
-				console.log("authenticated user: ");
-				console.dir(authenticatedUser);
-				//important: store current user
-				User.currentUser(authenticatedUser);
-				var newUser = User.currentUser();
-				console.log("new set user: ");
-				console.dir(newUser);
-				deferred.resolve(authenticatedUser);
-				$state.go('app.dashboard.main');								
+		$http
+		.post('/login', user)
+		.success(function(response) {			
+			if(response.redirect && response.username) { //post success
+				response.userRole = 'registered';
+				Session.create(response.userID, 
+										response.first_name,
+										response.last_name,
+										response.email,
+										response.username);				
+				deferred.resolve(response);
 			}			
 
-		}, function(err, status) {
-			console.log("no post for you");
+		}, function(err, status) {			
 			deferred.reject(err);
 		});
 
@@ -58,9 +49,11 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 	User.logout = function() {
 		var deferred = $q.defer();
 
-		$http.get('/logout')
+		$http
+		.get('/logout')
 		.success(function(response) {
 			deferred.resolve(response);
+			Session.destroy();
 		}, function(err) {
 			deferred.reject(err);
 		});
@@ -70,7 +63,8 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 		var deferred = $q.defer();
 		var users = [];
 
-		$http.get('/users')
+		$http
+		.get('/users')
 		.success(function(response) {
 			users.push(response);
 			deferred.resolve(users);			
@@ -112,9 +106,10 @@ var UserHelpers = function($http, $q, $state, $rootScope, Cookie) {
 
 };
 
+
 angular
 	.module('synergyApp')
-	.factory('User', ['$http', '$q', '$state', '$rootScope', 'Cookie', UserHelpers]);
+	.factory('User', ['$http', '$q', '$state', 'Cookie', 'Session', '$rootScope', UserHelpers]);
 
 
 })();
